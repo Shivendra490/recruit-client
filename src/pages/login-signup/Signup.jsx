@@ -1,11 +1,33 @@
 import styles from "./SignupLogin.module.css";
 import signLoginImg from "../../assets/signLogin.png";
+import { useState } from "react";
+import { registerUser } from "../../services/auth";
+import { Link } from "react-router-dom";
+
+const initialUserData={name:"",email:"",mobile:"",password:""}
 
 const Signup = () => {
+  const [user,setUser]=useState(initialUserData)
+  const [isChecked,setIsChecked]=useState(false)
+  const handleChange=(e)=>{
+    const {name,value}=e.target 
+    setUser({...user,[name]:value})
+  }
+  const handleCheck=(e)=>{
+    setIsChecked(e.target.checked)
+  }
+
+  const handleSubmit=async(e)=>{
+    e.preventDefault()
+    const data=await registerUser(user)
+    console.log("data",data)
+
+  }
+  console.log(user)
   return (
     <div className={styles.signupContainer}>
       <section className={styles.left}>
-        <form className={styles.form}>
+        <form className={styles.form} onSubmit={handleSubmit}>
           <div className={styles.formHead}>
             <h1 className={styles.mainHeading}>Create an account</h1>
             <h2 className={styles.subHeading}>
@@ -15,35 +37,54 @@ const Signup = () => {
           <div className={styles.formBody}>
             <input
               type="text"
+              name="name"
               className={styles.inputField}
               placeholder="Name"
+              onChange={handleChange}
             />
             <input
               type="text"
+              name="email"
               className={styles.inputField}
               placeholder="Email"
+              onChange={handleChange}
             />
             <input
               type="text"
+              name="mobile"
               className={styles.inputField}
               placeholder="Mobile"
+              onChange={handleChange}
             />
             <input
               type="text"
+              name="password"
               className={styles.inputField}
               placeholder="Password"
+              onChange={handleChange}
             />
             <div className={styles.tncWrapper}>
-              <input type="checkbox" className={styles.inputFideld} />
-              <p className={styles.tnc}>
+              <input
+                type="checkbox"
+                id="tncCheck"
+                checked={isChecked}
+                className={styles.inputFideld}
+                onChange={handleCheck}
+              />
+              <label className={styles.tnc} htmlFor="tncCheck">
                 By creating an account, I agree to our terms of use and privacy
                 policy
-              </p>
+              </label>
             </div>
           </div>
           <div className={styles.formFooter}>
-            <button type="submit" className={styles.button}>Create Account</button>
-            <p className={styles.haveAccount}>Already have an account? <span className={styles.linkText}>Sign In</span></p>
+            <button type="submit" className={styles.button}>
+              Create Account
+            </button>
+            <p className={styles.haveAccount}>
+              Already have an account?{" "}
+              <Link to={"/login"}className={styles.linkText}>Sign In</Link>
+            </p>
           </div>
         </form>
       </section>

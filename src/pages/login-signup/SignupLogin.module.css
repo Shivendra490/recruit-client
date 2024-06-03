@@ -2,7 +2,7 @@
     height:100vh;
     display:flex;
     border:none;
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 
 .left{
@@ -43,10 +43,10 @@
     border-radius: 5px;
 }
 
-.inputField::placeholder{
+/* .inputField::placeholder{
     font-size: 1.25rem;
     font-weight: 500;
-}
+} */
 
 .tncWrapper{
     display: flex;
@@ -102,6 +102,7 @@
     width:100%;
     height: 100%;
     aspect-ratio: 1/2;
+    display: Block;
     /* object-fit: contain; 667/382 */
    
 }
