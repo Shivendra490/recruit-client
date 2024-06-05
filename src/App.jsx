@@ -4,6 +4,7 @@ import Login from "./pages/login-signup/Login";
 import Signup from "./pages/login-signup/Signup";
 import Home from "./pages/home/Home";
 import AllJobs from "./pages/home/AllJobs";
+import AddEditJob from "./pages/add-editjob/AddEditJob";
 
 function App() {
   // const [count, setCount] = useState(0)
@@ -17,6 +18,7 @@ function App() {
           </Route>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/add-edit-job" element={<AddEditJob/>} />
         </Routes>
       </BrowserRouter>
     </>
