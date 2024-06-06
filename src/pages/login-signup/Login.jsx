@@ -2,12 +2,14 @@ import styles from "./SignupLogin.module.css";
 import signLoginImg from "../../assets/signLogin.png";
 import { useState } from "react";
 import { loginUser } from "../../services/auth";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { storeUserInfo } from "../../services/localStorage";
 
 const initialUserCred={email:"",password:""}
 
 const Login = () => {
   const [user,setUser]=useState(initialUserCred)
+  const navigate=useNavigate()
 
   const handleChange=(e)=>{
     const {name,value}=e.target 
@@ -16,9 +18,25 @@ const Login = () => {
 
 
   const handleSubmit=async(e)=>{
+   try{
     e.preventDefault()
     const data=await loginUser(user)
-    console.log("data",data)
+    console.log("dataa",data)
+    if(data?.status!==200){
+      console.log("err heeeeeeeere",data)
+      alert(data.response.data.message)
+      return
+    }
+    const {token,userId,email}=data.data
+    storeUserInfo(token,userId,email)
+    navigate('/')
+    alert(data.data.message)
+
+   }catch(err){
+    console.log('ERROR inside login.jsx',err)
+   }
+
+
 
   }
   return (

@@ -5,7 +5,9 @@ import crossIcon from "../../assets/crossIcon.png";
 import employeesIcon from "../../assets/employeesIcon.png";
 import flag from "../../assets/flag.png";
 
-import companyImg1 from "../../assets/rhImg1.png";
+// import companyImg1 from "../../assets/rhImg1.png";
+import { useEffect, useState } from "react";
+import { fetchAllJobs } from "../../services/job";
 const skillArr = [
   "frontend",
   "css",
@@ -19,6 +21,23 @@ const skillArr = [
 ];
 
 const AllJobs = () => {
+  const [allJobs, setAllJobs] = useState([]);
+
+  useEffect(() => {
+    fetchJobs();
+  }, []);
+
+  const fetchJobs = async () => {
+    try {
+      const data = await fetchAllJobs();
+      if (data.status !== 200) {
+        alert(data.response.data.message);
+      }
+      setAllJobs(data.data.data);
+    } catch (err) {
+      alert("something went wrong");
+    }
+  };
   return (
     <>
       <div className={styles.filterContainer}>
@@ -60,42 +79,48 @@ const AllJobs = () => {
       </div>
 
       <section className={styles.allJobsContainer}>
-        <div className={styles.singleJobContainer}>
-          <div className={styles.left}>
-            <div className={styles.companyImg}>
-              <img src={companyImg1} />
-            </div>
-            <div className={styles.jobComanyDetails}>
-              <span className={styles.position}>Frontend Developer</span>
-              <div className={styles.detailsWrapper}>
-                <div className={styles.employeesDetails}>
-                  <img src={employeesIcon} />
-                  
-                  <p>11-50</p>
+        {allJobs?.map((job) => {
+          return (
+            <div key={job?._id} className={styles.singleJobContainer}>
+              <div className={styles.left}>
+                <div className={styles.companyImg}>
+                  <img src={job?.companyLogo} />
                 </div>
-                <div className={styles.salary}>&#8377;50,000</div>
-                <div className={styles.location}>
-                  <img src={flag} /> <span>India</span>
+                <div className={styles.jobComanyDetails}>
+                  <span className={styles.position}>{job?.title}</span>
+                  <div className={styles.detailsWrapper}>
+                    <div className={styles.employeesDetails}>
+                      <img src={employeesIcon} />
+
+                      <p>11-50</p>
+                    </div>
+                    <div className={styles.salary}>&#8377;{job?.salary}</div>
+                    <div className={styles.location}>
+                      <img src={flag} /> <span>{job?.location}</span>
+                    </div>
+                  </div>
+                  <div className={styles.jobTypeWrapper}>
+                    <div>{job?.locationType}</div>
+                    <div>{job?.jobType}</div>
+                  </div>
                 </div>
               </div>
-              <div className={styles.jobTypeWrapper}>
-                <div>Office</div>
-                <div>Full Time</div>
+              <div className={styles.right}>
+                <div className={styles.skillListWrpper}>
+                  <div className={styles.unitSkillWrapper}>{job?.skills[0]}</div>
+                  <div className={styles.unitSkillWrapper}>{job?.skills[1]}</div>
+                  <div className={styles.unitSkillWrapper}>{job?.skills[2]}</div>
+                </div>
+                <div className={styles.buttonActions}>
+                  <button className={styles.editJobBtn}>Edit Job</button>
+                  <button className={styles.viewDetailsBtn}>
+                    View Details
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-          <div className={styles.right}>
-            <div className={styles.skillListWrpper}>
-              <div className={styles.unitSkillWrapper}>HTML</div>
-              <div className={styles.unitSkillWrapper}>Javascript</div>
-              <div className={styles.unitSkillWrapper}>CSS</div>
-            </div>
-            <div className={styles.buttonActions}>
-                <button className={styles.editJobBtn}>Edit Job</button>
-                <button className={styles.viewDetailsBtn}>View Details</button>
-            </div>
-          </div>
-        </div>
+          );
+        })}
       </section>
     </>
   );
