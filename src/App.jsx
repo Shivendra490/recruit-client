@@ -6,6 +6,7 @@ import Home from "./pages/home/Home";
 import AllJobs from "./pages/home/AllJobs";
 import AddEditJob from "./pages/add-editjob/AddEditJob";
 import JobDetails from "./pages/job-details/JobDetails";
+import ProtectedRoute from "./ProtectedRoute";
 
 function App() {
   // const [count, setCount] = useState(0)
@@ -14,13 +15,28 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home />} >
-            <Route index element={<AllJobs/>}/>
-            <Route path="/job-details/:id" element={<JobDetails/>}/>
+          <Route path="/" element={<Home />}>
+            <Route index element={<AllJobs />} />
+            <Route path="/job-details/:jobId" element={<JobDetails />} />
           </Route>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/add-edit-job" element={<AddEditJob/>} />
+          <Route
+            path="/add-edit-job/:jobId"
+            element={
+              <ProtectedRoute>
+                <AddEditJob />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/add-edit-job"
+            element={
+              <ProtectedRoute>
+                <AddEditJob />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </BrowserRouter>
     </>

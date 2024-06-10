@@ -1,20 +1,27 @@
 import styles from "./SignupLogin.module.css";
 import signLoginImg from "../../assets/signLogin.png";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { loginUser } from "../../services/auth";
 import { Link, useNavigate } from "react-router-dom";
-import { storeUserInfo } from "../../services/localStorage";
+import { getUserInfo, storeUserInfo } from "../../services/localStorage";
 
 const initialUserCred={email:"",password:""}
 
 const Login = () => {
   const [user,setUser]=useState(initialUserCred)
+  const {token}=getUserInfo()
   const navigate=useNavigate()
 
   const handleChange=(e)=>{
     const {name,value}=e.target 
     setUser({...user,[name]:value})
   }
+
+  useEffect(()=>{
+    if(token){
+      navigate("/")
+    }
+  },[])
 
 
   const handleSubmit=async(e)=>{

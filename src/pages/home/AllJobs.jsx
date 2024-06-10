@@ -8,6 +8,8 @@ import flag from "../../assets/flag.png";
 // import companyImg1 from "../../assets/rhImg1.png";
 import { useEffect, useState } from "react";
 import { fetchAllJobs } from "../../services/job";
+import { useNavigate } from "react-router-dom";
+import { getUserInfo } from "../../services/localStorage";
 const skillArr = [
   "frontend",
   "css",
@@ -21,7 +23,9 @@ const skillArr = [
 ];
 
 const AllJobs = () => {
+  const navigate = useNavigate();
   const [allJobs, setAllJobs] = useState([]);
+  const { token } = getUserInfo();
 
   useEffect(() => {
     fetchJobs();
@@ -73,6 +77,12 @@ const AllJobs = () => {
           </div>
           <div className={styles.actionWrapper}>
             <button className={styles.primaryBtn}>Apply Filter</button>
+            <button
+              onClick={() => navigate("/add-edit-job")}
+              className={styles.primaryBtn}
+            >
+              Add Job
+            </button>
             <span style={{ color: "#ED5353" }}>Clear</span>
           </div>
         </div>
@@ -107,13 +117,29 @@ const AllJobs = () => {
               </div>
               <div className={styles.right}>
                 <div className={styles.skillListWrpper}>
-                  <div className={styles.unitSkillWrapper}>{job?.skills[0]}</div>
-                  <div className={styles.unitSkillWrapper}>{job?.skills[1]}</div>
-                  <div className={styles.unitSkillWrapper}>{job?.skills[2]}</div>
+                  <div className={styles.unitSkillWrapper}>
+                    {job?.skills[0]}
+                  </div>
+                  <div className={styles.unitSkillWrapper}>
+                    {job?.skills[1]}
+                  </div>
+                  <div className={styles.unitSkillWrapper}>
+                    {job?.skills[2]}
+                  </div>
                 </div>
                 <div className={styles.buttonActions}>
-                  <button className={styles.editJobBtn}>Edit Job</button>
-                  <button className={styles.viewDetailsBtn}>
+                  {token && (
+                    <button
+                      className={styles.editJobBtn}
+                      onClick={() => navigate(`/add-edit-job/${job._id}`)}
+                    >
+                      Edit Job
+                    </button>
+                  )}
+                  <button
+                    className={styles.viewDetailsBtn}
+                    onClick={() => navigate(`job-details/${job._id}`)}
+                  >
                     View Details
                   </button>
                 </div>
