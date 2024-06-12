@@ -13,6 +13,7 @@
 .heading {
   font-size: 30px;
   font-weight: 700;
+  color:#1679ab;
   /* margin: 1rem; */
 }
 
@@ -33,6 +34,7 @@
   flex: 0.3;
   font-size: 24px;
   font-weight: 400;
+  color:#1679ab;
 }
 
 .inputText {
@@ -128,7 +130,7 @@
   font-weight: 500;
   padding:.5rem 1rem;
   min-width: 140px;
-  background-color:#ED5353;
+  background-color:#1679ab;
   color:#FFFFFF;
   border:none;
 }

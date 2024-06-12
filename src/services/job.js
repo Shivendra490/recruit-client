@@ -12,6 +12,19 @@ export const fetchAllJobs=async()=>{
     }
 }
 
+export const fetchAllMyJobs=async(userId)=>{
+    try{
+        const {token}=getUserInfo()
+        const data=await axios.get(`${DOMAIN}/api/job/allmyjobs/`+userId,{headers:{authorization:token}})
+        return data
+        
+    }catch(err){
+        return err
+    }
+}
+
+
+
 export const fetchSingleJob=async(jobId)=>{
     try{
         const data=await axios.get(`${DOMAIN}/api/job/${jobId}`)

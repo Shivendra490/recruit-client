@@ -35,6 +35,7 @@ const AddEditJob = () => {
         const data=await updateJob(job)
         if (!data?.status || data.status !== 200) {
           alert(data?.response?.data?.message);
+          navigate("/")
           return;
         }
         alert(data?.data?.message);
@@ -216,7 +217,7 @@ const AddEditJob = () => {
               />
             </div>
             <div className={styles.buttonActionWrapper}>
-              <button type="button" className={styles.cancelBtn}>
+              <button type="button" className={styles.cancelBtn} onClick={()=>navigate("/")}>
                 Cancel
               </button>
               <button className={styles.addJobBtn} type="submit">
