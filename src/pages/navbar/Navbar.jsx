@@ -5,6 +5,7 @@ import styles from "./Navbar.module.css";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  console.log('hey nav')
   const { token, email, userId } = getUserInfo();
   const recruiterName=email?.split('@')[0]
   const logoutHandler = () => {
@@ -12,6 +13,8 @@ const Navbar = () => {
     navigate("/login");
     return;
   };
+
+  
   return (
     <header>
       <nav className={styles.nav}>
@@ -22,6 +25,7 @@ const Navbar = () => {
               <div onClick={logoutHandler}>Logout</div>
               <NavLink to={"/"} className={({isActive})=>isActive ? styles.active : undefined}>Home</NavLink>
               <NavLink to={"/myjobs"} className={({isActive})=> isActive ? styles.active : undefined}>MyJobs</NavLink>
+              <NavLink to={"/add-edit-job"} className={({isActive})=>isActive ? styles.active : undefined}>Add Job</NavLink>
               <div>Hello {recruiterName}</div>
               <div className={styles.avatar}>{email[0]?.toUpperCase()}</div>
             </>

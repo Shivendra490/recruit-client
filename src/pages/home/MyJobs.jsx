@@ -4,9 +4,10 @@ import employeesIcon from "../../assets/employeesIcon.png";
 import flag from "../../assets/flag.png";
 
 import { useEffect, useState } from "react";
-import { fetchAllMyJobs } from "../../services/job";
+import { deleteJob, fetchAllMyJobs } from "../../services/job";
 import { useNavigate } from "react-router-dom";
 import { getUserInfo } from "../../services/localStorage";
+import { RiDeleteBinLine} from "react-icons/ri";
 
 const MyJobs = () => {
   const navigate = useNavigate();
@@ -30,6 +31,24 @@ const MyJobs = () => {
       alert("something went wrong");
     }
   };
+
+  const deleteJobHandler=async(jobId)=>{
+    try {
+      const data = await deleteJob(jobId);
+      console.log('deleteresponse',data)
+      if (data.status !== 200) {
+        alert(data.response.data.message);
+      }
+      alert(data.data.message)
+      const id=data.data.data._id
+      const updatedJobList=allMyJobs?.filter((job)=>{
+        return job._id.toString()!==id.toString()
+      })
+      setAllMyJobs(updatedJobList);
+    } catch (err) {
+      alert("something went wrong");
+    }
+  }
   return (
     <>
       <h2>Jobs Created By Me</h2>
@@ -87,6 +106,9 @@ const MyJobs = () => {
                     onClick={() => navigate(`/job-details/${job._id}`)}
                   >
                     View Details
+                  </button>
+                  <button className={styles.deleteBtn} onClick={()=>deleteJobHandler(job._id)}> 
+                  <RiDeleteBinLine />
                   </button>
                 </div>
               </div>

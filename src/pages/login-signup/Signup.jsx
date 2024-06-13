@@ -18,9 +18,16 @@ const Signup = () => {
   }
 
   const handleSubmit=async(e)=>{
-    e.preventDefault()
+    try{
+      e.preventDefault()
     const data=await registerUser(user)
+    alert(data.data.message)
+   
+    
     console.log("data",data)
+    }catch(err){
+      alert(err)
+    }
 
   }
   console.log(user)

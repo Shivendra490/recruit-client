@@ -14,7 +14,7 @@ const JobDetails = () => {
           
           if (!data?.status || data.status !== 200) {
             alert(data?.response?.data?.message);
-            console.log('hheeeeeeeeeeerer')
+            
             navigate("/");
 
             return;

@@ -2,7 +2,7 @@ import styles from "./Home.module.css"
 import Navbar from '../navbar/Navbar'
 import searchIcon from "../../assets/searchIcon.png";
 import crossIcon from "../../assets/crossIcon.png";
-import { Outlet, useNavigate } from 'react-router-dom'
+import { Outlet } from 'react-router-dom'
 
 const skillArr = [
   "frontend",
@@ -17,7 +17,9 @@ const skillArr = [
 ];
 
 const Home = () => {
-  const navigate=useNavigate()
+  
+
+ 
   return (
     <>
     <Navbar/>
@@ -55,12 +57,7 @@ const Home = () => {
           </div>
           <div className={styles.actionWrapper}>
             <button className={styles.primaryBtn}>Apply Filter</button>
-            <button
-              onClick={() => navigate("/add-edit-job")}
-              className={styles.primaryBtn}
-            >
-              Add Job
-            </button>
+            
             <span style={{ color: "#1679ab" }}>Clear</span>
           </div>
         </div>

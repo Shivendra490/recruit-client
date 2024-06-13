@@ -71,3 +71,14 @@ export const updateJob=async(job)=>{
         return err
     }
 }
+
+export const deleteJob=async(jobId)=>{
+    try{
+        const {token}=getUserInfo()
+        const data=await axios.delete(`${DOMAIN}/api/job/`+jobId,{headers:{authorization:token}})
+        return data
+        
+    }catch(err){
+        return err
+    }
+}

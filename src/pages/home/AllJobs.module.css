@@ -221,3 +221,15 @@
   border:none;
   
 }
+
+.deleteBtn {
+  background-color:#FFFFFF;
+  color: red;
+  padding: 0 0.5rem;
+  font-weight: 500;
+  font-size: 20px;
+  border:2px solid #1679ab;
+  display: grid;
+  place-content: center;
+  
+}
