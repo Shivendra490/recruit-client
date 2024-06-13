@@ -31,56 +31,55 @@ const AddEditJob = () => {
   const handleSubmit = async (e) => {
     try {
       e.preventDefault();
-      if(jobId){
-        const data=await updateJob(job)
-        if (!data?.status || data.status !== 200) {
-          alert(data?.response?.data?.message);
-          navigate("/")
-          return;
+      if (jobId) {
+        const response = await updateJob(job);
+
+        if (response.status === 200) {
+          alert(response?.data?.message);
+        } else {
+          alert(response?.data?.message);
         }
-        alert(data?.data?.message);
-        
-        console.log(data)
-        navigate("/")
-        return
-      }
-      const data = await createJob(job);
-      console.log(data);
-      if (!data?.status || data.status !== 201) {
-        alert(data?.response?.data?.message);
+        navigate("/");
         return;
       }
-      alert(data?.data?.message);
+      const response = await createJob(job);
+
+      if (response.status === 201) {
+        alert(response?.data?.message);
+      } else {
+        alert(response?.data?.message);
+      }
+
       navigate("/");
     } catch (err) {
       console.log(err);
+      alert("Something went wrong");
     }
   };
 
   useEffect(() => {
     if (jobId) {
-     try{
-      (async (jobId) => {
-        const data = await fetchSingleJob(jobId);
-        if (!data?.status || data.status !== 200) {
-          alert(data?.response?.data?.message);
-      
-          navigate("/");
-      
-          return;
-        }
-        
-        
-        setJob({...data?.data?.data,skills:data?.data?.data?.skills?.join(',')});
-      })(jobId);
-     }catch(err){
-      alert("this job does not exist");
-     }
+      try {
+        (async (jobId) => {
+          const response = await fetchSingleJob(jobId);
+
+          if (response?.status === 200) {
+            alert(response?.data?.message);
+            setJob({
+              ...response?.data?.data,
+              skills: response?.data?.data?.skills?.join(","),
+            });
+            return;
+          } else {
+            alert(response?.data?.message);
+            navigate("/");
+          }
+        })(jobId);
+      } catch (err) {
+        alert("this job does not exist");
+      }
     }
   }, []);
-
-
-
 
   return (
     <main>
@@ -217,7 +216,11 @@ const AddEditJob = () => {
               />
             </div>
             <div className={styles.buttonActionWrapper}>
-              <button type="button" className={styles.cancelBtn} onClick={()=>navigate("/")}>
+              <button
+                type="button"
+                className={styles.cancelBtn}
+                onClick={() => navigate("/")}
+              >
                 Cancel
               </button>
               <button className={styles.addJobBtn} type="submit">

@@ -5,47 +5,44 @@ import { loginUser } from "../../services/auth";
 import { Link, useNavigate } from "react-router-dom";
 import { getUserInfo, storeUserInfo } from "../../services/localStorage";
 
-const initialUserCred={email:"",password:""}
+const initialUserCred = { email: "", password: "" };
 
 const Login = () => {
-  const [user,setUser]=useState(initialUserCred)
-  const {token}=getUserInfo()
-  const navigate=useNavigate()
+  const [user, setUser] = useState(initialUserCred);
+  const { token } = getUserInfo();
+  const navigate = useNavigate();
 
-  const handleChange=(e)=>{
-    const {name,value}=e.target 
-    setUser({...user,[name]:value})
-  }
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setUser({ ...user, [name]: value });
+  };
 
-  useEffect(()=>{
-    if(token){
-      navigate("/")
+  useEffect(() => {
+    if (token) {
+      navigate("/");
     }
-  },[])
+  }, []);
 
-
-  const handleSubmit=async(e)=>{
-   try{
-    e.preventDefault()
-    const data=await loginUser(user)
-    console.log("dataa",data)
-    if(data?.status!==200){
-      console.log("err heeeeeeeere",data)
-      alert(data.response.data.message)
-      return
+  const handleSubmit = async (e) => {
+    try {
+      e.preventDefault();
+      const result = await loginUser(user);
+      console.log("resultlogin", result);
+      if (result?.status === 200) {
+        const { token, userId, email } = result;
+        storeUserInfo(token, userId, email);
+        alert(result.message);
+        navigate("/");
+        return;
+      } else {
+        alert(result.message);
+        return;
+      }
+    } catch (err) {
+      console.log(err);
+      alert("Something went wrong, try again");
     }
-    const {token,userId,email}=data.data
-    storeUserInfo(token,userId,email)
-    navigate('/')
-    alert(data.data.message)
-
-   }catch(err){
-    console.log('ERROR inside login.jsx',err)
-   }
-
-
-
-  }
+  };
   return (
     <div className={styles.signupContainer}>
       <section className={styles.left}>
@@ -73,8 +70,15 @@ const Login = () => {
             />
           </div>
           <div className={styles.formFooter}>
-            <button type="submit" className={styles.button}>Sign in</button>
-            <p className={styles.haveAccount}>Don t have an account? <Link to={"/signup"} className={styles.linkText}>Sign Up</Link></p>
+            <button type="submit" className={styles.button}>
+              Sign in
+            </button>
+            <p className={styles.haveAccount}>
+              Don t have an account?{" "}
+              <Link to={"/signup"} className={styles.linkText}>
+                Sign Up
+              </Link>
+            </p>
           </div>
         </form>
       </section>

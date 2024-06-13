@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { deleteJob, fetchAllMyJobs } from "../../services/job";
 import { useNavigate } from "react-router-dom";
 import { getUserInfo } from "../../services/localStorage";
-import { RiDeleteBinLine} from "react-icons/ri";
+import { RiDeleteBinLine } from "react-icons/ri";
 
 const MyJobs = () => {
   const navigate = useNavigate();
@@ -22,38 +22,43 @@ const MyJobs = () => {
 
   const fetchJobs = async (userId) => {
     try {
-      const data = await fetchAllMyJobs(userId);
-      if (data.status !== 200) {
-        alert(data.response.data.message);
+      const response = await fetchAllMyJobs(userId);
+
+      if (response?.status === 200) {
+        setAllMyJobs(response?.data?.data);
+        alert(response.data.message);
+      } else {
+        alert(response.data.message);
       }
-      setAllMyJobs(data.data.data);
     } catch (err) {
+      console.log(err);
       alert("something went wrong");
     }
   };
 
-  const deleteJobHandler=async(jobId)=>{
+  const deleteJobHandler = async (jobId) => {
     try {
-      const data = await deleteJob(jobId);
-      console.log('deleteresponse',data)
-      if (data.status !== 200) {
-        alert(data.response.data.message);
+      const response = await deleteJob(jobId);
+      console.log("deleteresponse", response);
+      if (response?.status === 200) {
+        const id = response?.data?.data?._id;
+        const updatedJobList = allMyJobs?.filter((job) => {
+          return job._id.toString() !== id.toString();
+        });
+        setAllMyJobs(updatedJobList);
+        alert(response?.data?.message);
+      } else {
+        alert(response?.data?.message);
       }
-      alert(data.data.message)
-      const id=data.data.data._id
-      const updatedJobList=allMyJobs?.filter((job)=>{
-        return job._id.toString()!==id.toString()
-      })
-      setAllMyJobs(updatedJobList);
     } catch (err) {
       alert("something went wrong");
     }
-  }
+  };
   return (
     <>
       <h2>Jobs Created By Me</h2>
       <section className={styles.allJobsContainer}>
-        {allMyJobs?.length===0 && <div>No job created yet</div>}
+        {allMyJobs?.length === 0 && <div>No job created yet</div>}
         {allMyJobs?.map((job) => {
           return (
             <div key={job?._id} className={styles.singleJobContainer}>
@@ -107,8 +112,11 @@ const MyJobs = () => {
                   >
                     View Details
                   </button>
-                  <button className={styles.deleteBtn} onClick={()=>deleteJobHandler(job._id)}> 
-                  <RiDeleteBinLine />
+                  <button
+                    className={styles.deleteBtn}
+                    onClick={() => deleteJobHandler(job._id)}
+                  >
+                    <RiDeleteBinLine />
                   </button>
                 </div>
               </div>

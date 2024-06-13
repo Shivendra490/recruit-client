@@ -17,20 +17,25 @@ const AllJobs = () => {
 
   const fetchJobs = async () => {
     try {
-      const data = await fetchAllJobs();
-      if (data.status !== 200) {
-        alert(data.response.data.message);
+      const response = await fetchAllJobs();
+
+      if (response?.status === 200) {
+        setAllJobs(response?.data?.data);
+        alert(response?.data?.message);
+      } else {
+        alert(response?.data.message);
       }
-      setAllJobs(data.data.data);
     } catch (err) {
+      console.log(err);
       alert("something went wrong");
     }
   };
   return (
     <>
-      
       <h2>All Jobs</h2>
+
       <section className={styles.allJobsContainer}>
+        {allJobs?.length === 0 && <div>No jobs found</div>}
         {allJobs?.map((job) => {
           return (
             <div key={job?._id} className={styles.singleJobContainer}>

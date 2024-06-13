@@ -2,11 +2,12 @@ import styles from "./SignupLogin.module.css";
 import signLoginImg from "../../assets/signLogin.png";
 import { useState } from "react";
 import { registerUser } from "../../services/auth";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const initialUserData={name:"",email:"",mobile:"",password:""}
 
 const Signup = () => {
+  const navigate=useNavigate()
   const [user,setUser]=useState(initialUserData)
   const [isChecked,setIsChecked]=useState(false)
   const handleChange=(e)=>{
@@ -20,17 +21,22 @@ const Signup = () => {
   const handleSubmit=async(e)=>{
     try{
       e.preventDefault()
-    const data=await registerUser(user)
-    alert(data.data.message)
-   
+    const result=await registerUser(user)
+    if(result?.status===201){
+      alert(result.message)
+      navigate("/login")
+    }else{
+      alert(result.message)
+      return
+    }
     
-    console.log("data",data)
     }catch(err){
-      alert(err)
+      console.log(err)
+     alert("Something went wrong")
     }
 
   }
-  console.log(user)
+  
   return (
     <div className={styles.signupContainer}>
       <section className={styles.left}>

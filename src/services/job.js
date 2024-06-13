@@ -4,22 +4,22 @@ import { getUserInfo } from "./localStorage"
 
 export const fetchAllJobs=async()=>{
     try{
-        const data=await axios.get(`${DOMAIN}/api/job/alljobs`)
-        return data
+        const response=await axios.get(`${DOMAIN}/api/job/alljobs`)
+        return response
         
     }catch(err){
-        return err
+        return err.response
     }
 }
 
 export const fetchAllMyJobs=async(userId)=>{
     try{
         const {token}=getUserInfo()
-        const data=await axios.get(`${DOMAIN}/api/job/allmyjobs/`+userId,{headers:{authorization:token}})
-        return data
+        const response=await axios.get(`${DOMAIN}/api/job/allmyjobs/`+userId,{headers:{authorization:token}})
+        return response
         
     }catch(err){
-        return err
+        return err.response
     }
 }
 
@@ -27,11 +27,13 @@ export const fetchAllMyJobs=async(userId)=>{
 
 export const fetchSingleJob=async(jobId)=>{
     try{
-        const data=await axios.get(`${DOMAIN}/api/job/${jobId}`)
-        return data
+        const response=await axios.get(`${DOMAIN}/api/job/${jobId}`)
+        console.log('response',response)
+        return response
         
     }catch(err){
-        return err
+        console.log('error',err)
+        return err.response
     }
 }
 
@@ -46,10 +48,10 @@ export const createJob=async(newJob)=>{
         }
        
         
-        const data=await axios.post(`${DOMAIN}/api/job/create`,newJob,{headers})
-        return data
+        const response=await axios.post(`${DOMAIN}/api/job/create`,newJob,{headers})
+        return response
     }catch(err){
-        return err
+        return err.response
     }
 }
 
@@ -64,21 +66,20 @@ export const updateJob=async(job)=>{
         }
        
         
-        const data=await axios.patch(`${DOMAIN}/api/job/update/${job._id}`,job,{headers})
-        console.log('updatejob',data)
-        return data
+        const response=await axios.patch(`${DOMAIN}/api/job/update/${job._id}`,job,{headers})
+        return response
     }catch(err){
-        return err
+        return err.response
     }
 }
 
 export const deleteJob=async(jobId)=>{
     try{
         const {token}=getUserInfo()
-        const data=await axios.delete(`${DOMAIN}/api/job/`+jobId,{headers:{authorization:token}})
-        return data
+        const response=await axios.delete(`${DOMAIN}/api/job/`+jobId,{headers:{authorization:token}})
+        return response
         
     }catch(err){
-        return err
+        return err.response
     }
 }

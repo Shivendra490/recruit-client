@@ -3,22 +3,23 @@ import { DOMAIN } from "../constants"
 
 const registerUser=async(user)=>{
    try{
-    const data= await axios.post(`${DOMAIN}/api/auth/signup`,user)
-    return data
+    const response= await axios.post(`${DOMAIN}/api/auth/signup`,user)
+    return {...response.data,status:response.status}
    }
    catch(err){
-    console.log("err",err)
+    console.log("errR",err)
+    return {...err.response.data,status:err.response.status}
    }
 
 }
 
 const loginUser=async(user)=>{
     try{
-     const data= await axios.post(`${DOMAIN}/api/auth/login`,user)
-     return data
+     const response= await axios.post(`${DOMAIN}/api/auth/login`,user)
+     return {...response.data,status:response.status}
     }
     catch(err){
-     return err
+     return {...err.response.data,status:err.response.status}
     }
  
  }

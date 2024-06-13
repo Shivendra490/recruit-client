@@ -10,23 +10,20 @@ const JobDetails = () => {
     if (jobId) {
       try {
         (async (jobId) => {
-          const data = await fetchSingleJob(jobId);
-          
-          if (!data?.status || data.status !== 200) {
-            alert(data?.response?.data?.message);
-            
-            navigate("/");
+          const response = await fetchSingleJob(jobId);
 
+          if (response?.status === 200) {
+            setJob(response?.data?.data);
+            alert(response?.data?.message);
             return;
+          } else {
+            alert(response?.data?.message);
+            navigate("/");
           }
-          // alert(data?.data?.message);
-
-          
-
-          setJob(data?.data?.data);
         })(jobId);
       } catch (err) {
-        alert("this job does not exist");
+        console.log(err);
+        alert("This job does not exist");
       }
     }
   }, []);
