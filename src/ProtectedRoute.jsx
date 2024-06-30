@@ -10,11 +10,7 @@ const ProtectedRoute = ({children}) => {
             navigate('/login')
         }
     })
-    if(!token || !email || !userId){
-        return
-    }else{
-        return children
-    }
+   return children
   
 }
 
