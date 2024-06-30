@@ -31,7 +31,6 @@ const Login = () => {
       if (result?.status === 200) {
         const { token, userId, email } = result;
         storeUserInfo(token, userId, email);
-        alert(result.message);
         navigate("/");
         return;
       } else {

@@ -14,7 +14,6 @@ const JobDetails = () => {
 
           if (response?.status === 200) {
             setJob(response?.data?.data);
-            alert(response?.data?.message);
             return;
           } else {
             alert(response?.data?.message);

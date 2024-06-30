@@ -21,7 +21,6 @@ const AllJobs = () => {
 
       if (response?.status === 200) {
         setAllJobs(response?.data?.data);
-        alert(response?.data?.message);
       } else {
         alert(response?.data.message);
       }
