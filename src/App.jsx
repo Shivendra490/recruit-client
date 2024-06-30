@@ -46,6 +46,12 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="*"
+            element={
+              <h1>Page not found</h1>
+            }
+          />
         </Routes>
       </BrowserRouter>
     </>
